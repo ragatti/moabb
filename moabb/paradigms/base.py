@@ -136,8 +136,11 @@ class BaseParadigm(metaclass=ABCMeta):
         for bandpass in self.filters:
             fmin, fmax = bandpass
             # filter data
-            raw_f = raw.copy().filter(fmin, fmax, method='iir',
-                                      picks=picks, verbose=False)
+            if fmin is None and fmax is None:
+                raw_f = raw
+            else:
+                raw_f = raw.copy().filter(fmin, fmax, method='iir',
+                                          picks=picks, verbose=False)
             # epoch data
             baseline = self.baseline
             if baseline is not None:
